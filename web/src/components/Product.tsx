@@ -6,13 +6,14 @@ import {
   ShoppingCartIcon,
   InformationCircleIcon,
 } from "@heroicons/react/solid";
+import { Link } from "react-router-dom";
 
 const Product = ({
+  _id,
   name,
   image,
   category,
   brand,
-  stock,
   numReviews,
   price,
 }: ProductType) => {
@@ -24,7 +25,7 @@ const Product = ({
     <div className="rounded-md shadow-md bg-white col-span-1 overflow-hidden relative">
       <img
         src={images[`${image}`]}
-        alt={name}
+        alt={_id}
         className="object-cover w-full h-9/12"
       />
 
@@ -49,10 +50,12 @@ const Product = ({
         <button className="card-button">
           <ShoppingCartIcon className="h-5 w-5 mr-2" /> 加入購物車
         </button>
-        <button className="card-button">
-          <InformationCircleIcon className="h-5 w-5 mr-2" />
-          商品細節
-        </button>
+        <Link to={`/product/${_id}`}>
+          <button className="card-button">
+            <InformationCircleIcon className="h-5 w-5 mr-2" />
+            商品細節
+          </button>
+        </Link>
       </div>
     </div>
   );

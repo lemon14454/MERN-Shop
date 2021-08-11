@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, selectUser, togglePanel } from "../redux/user";
 import {
@@ -8,7 +8,9 @@ import {
   LogoutIcon,
   CogIcon,
   MenuIcon,
+  ArchiveIcon,
 } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -26,9 +28,11 @@ const Header = () => {
           navOpen ? "opacity-90 shadow-md " : "opacity-0"
         }`}
       >
-        <a href="#" className="font-bold text-main mb-6 md:mb-0">
-          <span className="ml-3 text-2xl">MERN Shop</span>
-        </a>
+        <Link to="/">
+          <div className="font-bold text-main mb-6 md:mb-0">
+            <span className="ml-3 text-2xl">MERN Shop</span>
+          </div>
+        </Link>
 
         {/* 靠右的nav */}
         <div className="flex flex-col md:flex-row gap-x-4 relative">
@@ -42,7 +46,7 @@ const Header = () => {
                 onClick={() => setDropOpen(!dropOpen)}
                 className="nav-button md:bg-transparent md:border-none"
               >
-                {userInfo.name}
+                {userInfo?.name}
                 <ChevronDownIcon className="icon" />
               </button>
               <div
@@ -54,6 +58,13 @@ const Header = () => {
                   個人資料
                   <CogIcon className="icon" />
                 </button>
+                {userInfo?.isAdmin && (
+                  <Link to="/admin/productlist" className="nav-button">
+                    商品管理
+                    <ArchiveIcon className="icon" />
+                  </Link>
+                )}
+
                 <button
                   className="nav-button"
                   onClick={() => {

@@ -45,6 +45,7 @@ module.exports = {
     ],
   },
   output: {
+    publicPath: "/",
     path: path.resolve(__dirname, "..", "./build"),
     filename: "bundle.js",
   },
@@ -73,5 +74,8 @@ module.exports = {
     proxy: {
       "/api": "http://localhost:4000/",
     },
+    port: 8080,
+    contentBase: path.resolve(__dirname, "dist"),
+    historyApiFallback: { index: "/", disableDotRule: true },
   },
 };

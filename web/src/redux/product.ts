@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "../app/store";
-import { fetchProductsAPI } from "./api";
+import {
+  createProductAPI,
+  deleteProductAPI,
+  fetchProductByIdAPI,
+  fetchProductsAPI,
+  updateProductAPI,
+} from "./api";
 import { ProductType } from "./types";
 
 export interface ProductState {
@@ -10,6 +15,23 @@ export interface ProductState {
     products: ProductType[];
     page: number;
     pages: number;
+  };
+  productDetail: {
+    loading: boolean;
+    product: ProductType | null;
+  };
+  productDelete: {
+    loading: boolean;
+    success: boolean;
+  };
+  productCreate: {
+    loading: boolean;
+    success: boolean;
+    product: ProductType | null;
+  };
+  productUpdate: {
+    loading: boolean;
+    success: boolean;
   };
 }
 
@@ -26,6 +48,23 @@ const initialState: ProductState = {
     page: 1,
     pages: 1,
   },
+  productDetail: {
+    loading: false,
+    product: null,
+  },
+  productDelete: {
+    loading: false,
+    success: false,
+  },
+  productCreate: {
+    loading: false,
+    success: false,
+    product: null,
+  },
+  productUpdate: {
+    loading: false,
+    success: false,
+  },
 };
 
 export const fetchProducts = createAsyncThunk(
@@ -33,12 +72,37 @@ export const fetchProducts = createAsyncThunk(
   fetchProductsAPI
 );
 
+export const fetchProductById = createAsyncThunk(
+  "product/fetchProduct",
+  fetchProductByIdAPI
+);
+
+export const deleteProduct = createAsyncThunk(
+  "product/delete",
+  deleteProductAPI
+);
+
+export const createProduct = createAsyncThunk(
+  "product/create",
+  createProductAPI
+);
+
+export const updateProduct = createAsyncThunk(
+  "product/update",
+  updateProductAPI
+);
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    successClear: (state) => {
+      state.productCreate.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // fetch All Products
       .addCase(fetchProducts.pending, (state) => {
         state.productList.loading = true;
       })
@@ -50,9 +114,44 @@ export const productSlice = createSlice({
           state.productList.page = action.payload.page;
           state.productList.pages = action.payload.pages;
         }
-      );
+      )
+      // fetch Product By ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.productDetail.loading = true;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.productDetail.loading = false;
+        state.productDetail.product = action.payload!;
+      })
+      // delete Product
+      .addCase(deleteProduct.pending, (state) => {
+        state.productDelete.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.productDelete.loading = false;
+        state.productDelete.success = true;
+      })
+      // create Product
+      .addCase(createProduct.pending, (state) => {
+        state.productCreate.loading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.productCreate.loading = false;
+        state.productCreate.success = true;
+        state.productCreate.product = action.payload;
+      })
+      // update Product
+      .addCase(updateProduct.pending, (state) => {
+        state.productUpdate.loading = true;
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.productUpdate.loading = false;
+        state.productUpdate.success = true;
+      });
   },
 });
+
+export const { successClear } = productSlice.actions;
 
 export const selectProduct = (state: RootState) => state.product;
 

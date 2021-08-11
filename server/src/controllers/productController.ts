@@ -4,7 +4,7 @@ import Product from "../models/Product";
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const pageSize = 4;
+    const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
     const keyword = req.query.keyword
       ? {

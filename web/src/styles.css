@@ -6,6 +6,11 @@
   body {
     @apply m-0 p-0 font-noto antialiased min-h-[100vh] relative bg-bg;
   }
+
+  th,
+  td {
+    @apply p-4;
+  }
 }
 
 @layer components {
@@ -23,5 +28,13 @@
 
   .icon {
     @apply h-4 w-4 ml-2;
+  }
+
+  .form-label {
+    @apply block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2;
+  }
+
+  .form-input {
+    @apply shadow appearance-none block w-full bg-gray-100 text-gray-900 border border-gray-100 rounded py-3 px-4 mb-3 leading-tight focus:border-none focus:bg-white focus:ring-main;
   }
 }
