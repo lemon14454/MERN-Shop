@@ -1,12 +1,13 @@
-import axios from "axios";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   fetchProductById,
+  fetchProducts,
   selectProduct,
   updateProduct,
+  uploadImage,
 } from "../redux/product";
 import { selectUser } from "../redux/user";
 
@@ -14,15 +15,16 @@ interface MatchProps {
   id: string;
 }
 
-const ProductEdit = ({ match }: RouteComponentProps<MatchProps>) => {
-  const productId = match.params.id;
-  const [uploading, setUploading] = useState(false);
-  const [image, setImage] = useState("");
+// Bug: 圖片路徑不正確，前面多一個 /
+// 每次上傳完頁面都會重新整理，會把 image 給刷新
+// 所以路徑都會變上一個圖片
 
+const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
+  const productId = match.params.id;
   const dispatch = useAppDispatch();
   const {
-    productUpdate,
     productDetail: { product, loading: detailLoading },
+    imageUpload: { image: uploadedImage },
   } = useAppSelector(selectProduct);
 
   const {
@@ -30,28 +32,16 @@ const ProductEdit = ({ match }: RouteComponentProps<MatchProps>) => {
   } = useAppSelector(selectUser);
 
   useEffect(() => {
-    dispatch(fetchProductById(productId));
-  }, [match]);
-
-  const uploadFileHandler = async (e: any) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading(true);
-
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      const { data } = await axios.post("/api/upload", formData, config);
-      setImage(data);
-      setUploading(false);
-    } catch (error) {
-      console.log(error);
-      setUploading(false);
+    if (!product?.name || product._id !== productId) {
+      dispatch(fetchProductById(productId));
     }
+  }, [history, productId, product, dispatch]);
+
+  const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 僅上傳圖片，表單還沒送出
+    e.preventDefault();
+    const files = e.target.files!;
+    dispatch(uploadImage(files));
   };
 
   return (
@@ -63,13 +53,18 @@ const ProductEdit = ({ match }: RouteComponentProps<MatchProps>) => {
           initialValues={{
             ...product,
           }}
-          onSubmit={(values) => {
-            dispatch(
+          onSubmit={async (values) => {
+            const image = uploadedImage || values.image;
+
+            await dispatch(
               updateProduct({
-                product: { ...product, image },
+                product: { ...values, image },
                 token: userInfo?.token!,
               })
             );
+            // 更新完列表要重整
+            dispatch(fetchProducts({}));
+            history.push("/admin/productlist");
           }}
         >
           {({ values, handleChange, handleSubmit, isSubmitting }) => (
@@ -151,10 +146,10 @@ const ProductEdit = ({ match }: RouteComponentProps<MatchProps>) => {
                 <input
                   type="text"
                   name="image"
-                  placeholder="iphone12.jpg"
+                  placeholder={values.image}
                   className="form-input"
-                  onChange={(e) => setImage(e.target.value)}
-                  value={image}
+                  onChange={handleChange}
+                  value={values.image}
                 />
                 <input type="file" onChange={uploadFileHandler} />
               </div>

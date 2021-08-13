@@ -7,8 +7,6 @@ import userRoutes from "./routes/userRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
 import path from "path";
 
-// import { createProxyMiddleware } from "http-proxy-middleware";
-
 connectDB();
 const app = express();
 
@@ -19,20 +17,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/upload", uploadRoutes);
 
-app.use("/uploads", express.static(path.join(__dirname, "/../uploads")));
+// const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(path.resolve(), "../web/src")));
 
 app.get("/", (_, res) => {
   res.send("Api is running");
 });
-
-// http-proxy-middleware
-// app.use(
-//   "/api",
-//   createProxyMiddleware({
-//     target: "http://localhost:8080",
-//     changeOrigin: true,
-//   })
-// );
 
 app.listen(process.env.PORT, () => {
   console.log(`server running at port ${process.env.PORT}`);

@@ -6,6 +6,7 @@ import {
   fetchProductByIdAPI,
   fetchProductsAPI,
   updateProductAPI,
+  uploadImages,
 } from "./api";
 import { ProductType } from "./types";
 
@@ -32,6 +33,10 @@ export interface ProductState {
   productUpdate: {
     loading: boolean;
     success: boolean;
+  };
+  imageUpload: {
+    loading: boolean;
+    image: string;
   };
 }
 
@@ -65,7 +70,16 @@ const initialState: ProductState = {
     loading: false,
     success: false,
   },
+  imageUpload: {
+    loading: false,
+    image: "",
+  },
 };
+
+export const uploadImage = createAsyncThunk(
+  "product/uploadImage",
+  uploadImages
+);
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
@@ -98,6 +112,7 @@ export const productSlice = createSlice({
   reducers: {
     successClear: (state) => {
       state.productCreate.success = false;
+      state.productUpdate.success = false;
     },
   },
   extraReducers: (builder) => {
@@ -147,6 +162,15 @@ export const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state) => {
         state.productUpdate.loading = false;
         state.productUpdate.success = true;
+        state.imageUpload.image = "";
+      })
+      // upload Image
+      .addCase(uploadImage.pending, (state) => {
+        state.imageUpload.loading = true;
+      })
+      .addCase(uploadImage.fulfilled, (state, action) => {
+        state.imageUpload.image = action.payload;
+        state.imageUpload.loading = false;
       });
   },
 });

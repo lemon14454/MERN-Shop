@@ -93,6 +93,7 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
       return res.json({ message: "找不到商品" });
     }
   } catch (error) {
+    console.log(error);
     return res.json({ message: "找不到商品" });
   }
 };

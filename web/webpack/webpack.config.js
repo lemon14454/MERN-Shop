@@ -77,5 +77,9 @@ module.exports = {
     port: 8080,
     contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: { index: "/", disableDotRule: true },
+    // 避免讓照片上傳後出現重新整理
+    watchOptions: {
+      ignored: [path.resolve(__dirname, "..", "src", "images")],
+    },
   },
 };
