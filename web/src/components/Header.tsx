@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, selectUser, togglePanel } from "../redux/user";
 import {
@@ -50,6 +50,10 @@ const Header = () => {
                 <ChevronDownIcon className="icon" />
               </button>
               <div
+                onClick={() => {
+                  setDropOpen(!dropOpen);
+                  setNavOpen(!navOpen);
+                }}
                 className={`${
                   dropOpen ? "opacity-100" : "opacity-0 hidden"
                 } transition duration-300 flex flex-col md:absolute md:top-6 md:right-0 md:w-[250px] md:bg-bg md:rounded-md md:p-4 md:shadow-lg md:border-gray-200 md:border ml-6 mt-3`}
@@ -69,7 +73,6 @@ const Header = () => {
                   className="nav-button"
                   onClick={() => {
                     dispatch(logout());
-                    setDropOpen(!dropOpen);
                   }}
                 >
                   登出

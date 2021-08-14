@@ -23,11 +23,13 @@ const Product = ({
 
   return (
     <div className="rounded-md shadow-md bg-white col-span-1 overflow-hidden relative">
-      <img
-        src={images[`${image}`]}
-        alt={_id}
-        className="object-cover w-full h-9/12"
-      />
+      <div className="w-full md:h-[200px]">
+        <img
+          src={images[`${image}`]}
+          alt={_id}
+          className="h-full w-full object-cover"
+        />
+      </div>
 
       <div className="p-4 pb-12">
         <p className="text-sm text-gray-400">

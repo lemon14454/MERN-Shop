@@ -1,99 +1,139 @@
-import { useState } from "react";
-import { useAppDispatch } from "../app/hooks";
-import { register, togglePanel } from "../redux/user";
-import InputLabel from "./InputLabel";
+import { Form, Formik } from "formik";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { register, selectUser, togglePanel } from "../redux/user";
+import { RegisterSchema } from "../util/validations";
+import { XIcon, FastForwardIcon } from "@heroicons/react/solid";
 
 const Register = () => {
   const dispatch = useAppDispatch();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const {
+    register: { error },
+  } = useAppSelector(selectUser);
 
   return (
-    <div className="bg-white p-4 rounded-md w-[90%] mt-[150px] lg:mt-0 lg:w-[500px] relative">
+    <div className="user-form">
       <button
         onClick={() => dispatch(togglePanel("none"))}
         className="absolute top-5 right-5 bg-red-500 rounded-md p-1 hover:scale-105 transition duration-100"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <XIcon className="h-5 w-5 text-white" />
       </button>
 
       <h1 className="font-bold text-3xl my-3">會員註冊</h1>
-      <InputLabel
-        type="text"
-        name="name"
-        label="使用者名稱"
-        value={name}
-        onChange={setName}
-      />
-      <InputLabel
-        type="text"
-        name="email"
-        label="電子郵件"
-        value={email}
-        onChange={setEmail}
-      />
-      <InputLabel
-        type="password"
-        name="password"
-        label="密碼"
-        value={password}
-        onChange={setPassword}
-      />
-      <InputLabel
-        type="password"
-        name="confirmPassword"
-        label="確認密碼"
-        value={confirmPassword}
-        onChange={setConfirmPassword}
-      />
 
-      <div className="flex mt-6 items-end">
-        <p className="text-xs pl-2">
-          已經有帳號?{" "}
-          <span
-            className="text-green-400 cursor-pointer hover:text-green-200"
-            onClick={() => dispatch(togglePanel("login"))}
-          >
-            登入
-          </span>
-        </p>
-        <button
-          onClick={() => dispatch(register({ name, email, password }))}
-          className="form-button"
-        >
-          註冊
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 ml-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          password2: "",
+        }}
+        validationSchema={RegisterSchema}
+        onSubmit={(value, { setSubmitting }) => {
+          const data = {
+            name: value.name,
+            email: value.email,
+            password: value.password,
+          };
+
+          setTimeout(() => {
+            setSubmitting(true);
+            dispatch(register(data));
+            setSubmitting(false);
+          }, 1000);
+        }}
+      >
+        {({
+          values,
+          errors,
+          handleChange,
+          handleSubmit,
+          handleBlur,
+          isSubmitting,
+          touched,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <input
+              className="user-form-input"
+              type="text"
+              name="name"
+              placeholder="請輸入使用者名稱"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
             />
-          </svg>
-        </button>
-      </div>
+            <p className="user-form-error">
+              {errors.name && touched.name && errors.name}
+            </p>
+
+            <input
+              className="user-form-input"
+              type="email"
+              name="email"
+              placeholder="請輸入信箱"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.email}
+            />
+            <p className="user-form-error">
+              {errors.email && touched.email && errors.email}
+            </p>
+
+            <input
+              className="user-form-input"
+              type="password"
+              name="password"
+              placeholder="請輸入密碼"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password}
+            />
+            <p className="user-form-error">
+              {errors.password && touched.password && errors.password}
+            </p>
+
+            <input
+              className="user-form-input"
+              type="password"
+              name="password2"
+              placeholder="請再次輸入密碼"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password2}
+            />
+            <p className="user-form-error">
+              {errors.password2 && touched.password2 && errors.password2}
+            </p>
+
+            <div className="flex mt-6">
+              <div className="text-xs">
+                <p>
+                  已經有帳號?{" "}
+                  <span
+                    className="text-green-400 cursor-pointer hover:text-green-200"
+                    onClick={() => dispatch(togglePanel("login"))}
+                  >
+                    登入
+                  </span>
+                </p>
+                {error && <p className="user-form-error mt-2">{error}</p>}
+              </div>
+              <button
+                type="submit"
+                className="form-button"
+                disabled={isSubmitting}
+              >
+                註冊
+                <FastForwardIcon
+                  className={`icon ${
+                    isSubmitting ? "animate-pulse text-green-500" : ""
+                  }`}
+                />
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

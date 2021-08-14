@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
@@ -14,10 +14,6 @@ import { selectUser } from "../redux/user";
 interface MatchProps {
   id: string;
 }
-
-// Bug: 圖片路徑不正確，前面多一個 /
-// 每次上傳完頁面都會重新整理，會把 image 給刷新
-// 所以路徑都會變上一個圖片
 
 const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
   const productId = match.params.id;

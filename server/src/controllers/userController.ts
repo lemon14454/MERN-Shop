@@ -8,8 +8,8 @@ import { AuthRequest } from "../middleware/auth";
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const { error } = loginValidation(req.body);
-  if (error) return res.status(400).json({ error: error.details[0].message });
+  const valid = loginValidation(req.body);
+  if (!valid) return res.status(400).json({ error: "格式錯誤!!!" });
 
   const user = await User.findOne({ email });
 
@@ -22,15 +22,15 @@ export const login = async (req: Request, res: Response) => {
       token: generateToken(user._id),
     });
   } else {
-    return res.json({ error: "帳號或密碼錯誤" });
+    return res.status(400).json({ error: "帳號或密碼錯誤" });
   }
 };
 
 export const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
-  const { error } = registerValidation(req.body);
-  if (error) return res.json({ error: error.details[0].message });
+  const valid = registerValidation(req.body);
+  if (!valid) return res.status(400).json({ error: "格式錯誤!!!" });
 
   const exist = await User.findOne({ email });
   if (exist) return res.json({ error: "此信箱已被使用" });
@@ -52,7 +52,7 @@ export const register = async (req: Request, res: Response) => {
       token: generateToken(savedUser._id),
     });
   } catch (error) {
-    return res.json({ error });
+    return res.status(400).json({ error });
   }
 };
 

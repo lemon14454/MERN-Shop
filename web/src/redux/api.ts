@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProductType, UserType } from "./types";
+import { CartItemType, ProductType, UserType } from "./types";
 
 // load ImageAPI
 
@@ -44,18 +44,13 @@ export const loginAPI = async ({ email, password }: LoginData) => {
     },
   };
 
-  try {
-    const { data } = await axios.post(
-      `/api/users/login`,
-      { email: email, password: password },
-      config
-    );
+  const { data } = await axios.post(
+    `/api/users/login`,
+    { email: email, password: password },
+    config
+  );
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  return data;
 };
 
 // RegisterAPI
@@ -244,4 +239,24 @@ export const updateProductAPI = async ({
   );
 
   return data;
+};
+
+// ----------------------- Cart -------------------------
+interface AddToCartProps {
+  id: string;
+  qty: number;
+}
+
+export const addToCartAPI = async ({ id, qty }: AddToCartProps) => {
+  const { data } = await axios.get(`/api/products/${id}`);
+  const item: CartItemType = {
+    _id: data._id,
+    name: data.name,
+    image: data.image,
+    price: data.price,
+    stock: data.stock,
+    qty,
+  };
+
+  return item;
 };

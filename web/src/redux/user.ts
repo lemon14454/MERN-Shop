@@ -6,12 +6,10 @@ import { UserType } from "./types";
 export interface UserState {
   panel: "none" | "login" | "register";
   login: {
-    loading: boolean;
     userInfo: UserType | null;
     error: string;
   };
   register: {
-    loading: boolean;
     error: string;
   };
 }
@@ -23,12 +21,10 @@ const userInfoFromStorage: UserType | null = localStorage.getItem("userInfo")
 const initialState: UserState = {
   panel: "none",
   login: {
-    loading: false,
     userInfo: userInfoFromStorage,
     error: "",
   },
   register: {
-    loading: false,
     error: "",
   },
 };
@@ -54,28 +50,22 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // login Builder
-      .addCase(login.pending, (state) => {
-        state.login.loading = true;
-      })
       .addCase(login.fulfilled, (state, action) => {
-        state.login.loading = false;
         state.panel = "none";
         state.login.userInfo = action.payload;
+        state.login.error = "";
+        localStorage.setItem("userInfo", JSON.stringify(action.payload));
       })
-      .addCase(login.rejected, (state, action) => {
-        state.login.loading = false;
-        state.login.error = action.error.message!;
+      .addCase(login.rejected, (state) => {
+        state.login.error = "信箱或密碼錯誤";
       })
       // register Builder
-      .addCase(register.pending, (state) => {
-        state.register.loading = true;
-      })
       .addCase(register.fulfilled, (state) => {
-        state.register.loading = false;
+        state.register.error = "";
+        state.panel = "login";
       })
-      .addCase(register.rejected, (state, action) => {
-        state.register.loading = false;
-        state.register.error = action.error.message!;
+      .addCase(register.rejected, (state) => {
+        state.register.error = "資料格式錯誤";
       });
   },
 });
