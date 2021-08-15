@@ -42,12 +42,12 @@ const Product = ({
         </p>
         <h3 className="font-semibold text-lg">{name}</h3>
         <div className="flex text-sm text-gray-400 mt-2 absolute bottom-[10px] justify-between w-[95%] md:w-[90%]">
+          <p className="text-yellow-500 font-bold text-xl">
+            $ {price.toLocaleString("zh-tw")}
+          </p>
           <p className="flex justify-center items-center text-main font-medium">
             <AnnotationIcon className="h-5 w-5 mr-1" />
             {numReviews}
-          </p>
-          <p className="flex justify-center items-center text-yellow-500 font-medium text-xl">
-            $ {price.toLocaleString("zh-tw")}
           </p>
         </div>
       </div>

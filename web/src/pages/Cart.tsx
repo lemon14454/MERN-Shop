@@ -82,7 +82,7 @@ const Cart = ({ match, history }: RouteComponentProps<MatchProps>) => {
       </div>
 
       {CartItems.length > 0 && (
-        <div className="bg-white rounded-md p-4 shadow-md min-w-[400px] relative pb-8">
+        <div className="bg-white rounded-md p-4 shadow-md min-w-[400px] h-[170px] relative pb-8">
           <h1 className="text-3xl font-bold mb-8">總結</h1>
           <div className="top-3 right-3 absolute flex gap-x-2">
             <Link

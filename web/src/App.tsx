@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import ProductEdit from "./pages/ProductEdit";
 import ProductList from "./pages/ProductList";
+import Profile from "./pages/Profile";
 import "./styles.css";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/" component={Home} exact />
         <Route path="/product/:id" component={ProductDetail} />
         <Route path="/cart" component={Cart} />
+        <Route path="/profile" component={Profile} />
         <Route path="/admin/productlist" component={ProductList} exact />
         <Route
           path="/admin/productlist/:pageNumber"

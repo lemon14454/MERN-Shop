@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { loginAPI, registerAPI } from "./api";
+import { loginAPI, registerAPI, updateUserProfileAPI } from "./api";
 import { UserType } from "./types";
 
 export interface UserState {
@@ -31,6 +31,10 @@ const initialState: UserState = {
 
 export const login = createAsyncThunk("user/login", loginAPI);
 export const register = createAsyncThunk("user/register", registerAPI);
+export const updateUserProfile = createAsyncThunk(
+  "user/update",
+  updateUserProfileAPI
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -66,6 +70,11 @@ export const userSlice = createSlice({
       })
       .addCase(register.rejected, (state) => {
         state.register.error = "資料格式錯誤";
+      })
+      // Update User Profile
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.login.userInfo = action.payload;
+        localStorage.setItem("userInfo", JSON.stringify(action.payload));
       });
   },
 });

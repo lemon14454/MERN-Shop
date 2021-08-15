@@ -97,19 +97,11 @@ export const userDetailAPI = async ({ id, token }: UserDetailProps) => {
 
 // updateUserAPI
 
-interface UpdateUserProps {
-  user: UserType;
-  token: string;
-}
-
-export const updateUserProfileAPI = async ({
-  user,
-  token,
-}: UpdateUserProps) => {
+export const updateUserProfileAPI = async (user: UserType) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${user.token}`,
     },
   };
 
