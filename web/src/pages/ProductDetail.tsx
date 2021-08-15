@@ -3,13 +3,14 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Rating from "../components/Rating";
 import { importImages } from "../redux/api";
+import { addToCart } from "../redux/cart";
 import { fetchProductById, selectProduct } from "../redux/product";
 
 interface IParam {
   id: string;
 }
 
-const ProductDetail = ({ match, history }: RouteComponentProps<IParam>) => {
+const ProductDetail = ({ match }: RouteComponentProps<IParam>) => {
   const [qty, setQty] = useState(1);
 
   const dispatch = useAppDispatch();
@@ -52,7 +53,9 @@ const ProductDetail = ({ match, history }: RouteComponentProps<IParam>) => {
         />
         <p className="my-6">{product?.description}</p>
         <div className="flex justify-between items-center border-t-[1px] border-gray-300 pt-6">
-          <p className="font-bold text-2xl">${product?.price}</p>
+          <p className="font-medium text-2xl">
+            ${product?.price.toLocaleString("zh-tw")}
+          </p>
           <div>
             {stockShow! > 0 ? (
               <>
@@ -67,7 +70,12 @@ const ProductDetail = ({ match, history }: RouteComponentProps<IParam>) => {
                     </option>
                   ))}
                 </select>
-                <button className="rounded-md px-4 py-2 bg-main text-white cursor-pointer hover:bg-green-600 transition duration-300 hover:scale-105">
+                <button
+                  onClick={() =>
+                    dispatch(addToCart({ id: product?._id!, qty: qty }))
+                  }
+                  className="rounded-md px-4 py-2 bg-main text-white cursor-pointer transition duration-300 hover:scale-105"
+                >
                   加入購物車
                 </button>
               </>
