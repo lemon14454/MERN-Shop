@@ -1,13 +1,10 @@
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { changeQty, removeFromCart, selectCart } from "../redux/cart";
 import { TrashIcon, CheckCircleIcon } from "@heroicons/react/solid";
 import { importImages } from "../redux/api";
-interface MatchProps {
-  id: string;
-}
 
-const Cart = ({ match, history }: RouteComponentProps<MatchProps>) => {
+const Cart = () => {
   const dispatch = useAppDispatch();
   const { CartItems } = useAppSelector(selectCart);
 
@@ -91,10 +88,13 @@ const Cart = ({ match, history }: RouteComponentProps<MatchProps>) => {
             >
               繼續購物
             </Link>
-            <button className="flex items-center bg-main text-white px-4 py-2 rounded font-semibold hover:scale-105 transform transition">
+            <Link
+              to="/checkout"
+              className="flex items-center bg-main text-white px-4 py-2 rounded font-semibold hover:scale-105 transform transition"
+            >
               結帳
               <CheckCircleIcon className="icon" />
-            </button>
+            </Link>
           </div>
 
           <div className="flex justify-around items-center">

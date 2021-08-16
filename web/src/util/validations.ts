@@ -33,3 +33,10 @@ export const UpdateProfile = Yup.object().shape({
     return this.parent.password === value;
   }),
 });
+
+export const ShippingAddress = Yup.object().shape({
+  address: Yup.string().required("地址不能為空"),
+  city: Yup.string().required("城市不能為空"),
+  postalCode: Yup.string().required("郵遞區號不能為空"),
+  country: Yup.string().required("國家不能為空"),
+});

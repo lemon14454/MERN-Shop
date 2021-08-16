@@ -1,5 +1,11 @@
 import axios from "axios";
-import { CartItemType, ProductType, UserType } from "./types";
+import {
+  CartItemType,
+  OrderItemType,
+  ProductType,
+  ShipAddressType,
+  UserType,
+} from "./types";
 
 // load ImageAPI
 
@@ -251,4 +257,114 @@ export const addToCartAPI = async ({ id, qty }: AddToCartProps) => {
   };
 
   return item;
+};
+
+// ----------------------- Order -------------------------
+
+// createOrder
+interface createOrderProps {
+  order: {
+    orderItems: OrderItemType[];
+    paymentMethod: "貨到付款" | "信用卡";
+    shippingAddress: ShipAddressType;
+    totalPrice: number;
+  };
+  token: string;
+}
+
+export const createOrderAPI = async ({ order, token }: createOrderProps) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.post(`/api/orders`, order, config);
+
+  return data;
+};
+
+// getOrderDetailByID
+interface getOrderDetailsProps {
+  id: string;
+  token: string;
+}
+
+export const getOrderDetailsAPI = async ({
+  id,
+  token,
+}: getOrderDetailsProps) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(`/api/orders/${id}`, config);
+
+  return data;
+};
+
+// pay Order
+interface payOrderProps {
+  id: string;
+  token: string;
+}
+
+export const payOrderAPI = async ({ id, token }: payOrderProps) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.put(`/api/orders/${id}/pay`, {}, config);
+
+  return data;
+};
+
+// deliver Order
+interface deliverOrderProps {
+  id: string;
+  token: string;
+}
+
+export const deliverOrderAPI = async ({ id, token }: deliverOrderProps) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.put(`/api/orders/${id}/deliver`, {}, config);
+
+  return data;
+};
+
+// list My Orders
+export const listMyOrdersAPI = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(`/api/orders/myorders`, config);
+
+  return data;
+};
+
+// list All Orders
+export const listAllOrdersAPI = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(`/api/orders`, config);
+
+  return data;
 };

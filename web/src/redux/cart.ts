@@ -5,22 +5,26 @@ import { CartItemType, ShipAddressType } from "./types";
 
 export interface CartState {
   CartItems: CartItemType[] | [];
-  shipAddress: ShipAddressType | null;
+  shippingAddress: ShipAddressType;
+  paymentMethod: "信用卡" | "貨到付款";
+  step: 1 | 2 | 3 | 4;
 }
 
 const cartFromStorage: CartItemType[] = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart")!)
   : [];
 
-const shipAddressFromStorage: ShipAddressType | null = localStorage.getItem(
-  "shipAddress"
+const shippingAddressFromStorage: ShipAddressType = localStorage.getItem(
+  "shippingAddress"
 )
-  ? JSON.parse(localStorage.getItem("shipAddress")!)
-  : null;
+  ? JSON.parse(localStorage.getItem("shippingAddress")!)
+  : { address: "", city: "", postalCode: "", country: "" };
 
 const initialState: CartState = {
   CartItems: cartFromStorage,
-  shipAddress: shipAddressFromStorage,
+  shippingAddress: shippingAddressFromStorage,
+  paymentMethod: "貨到付款",
+  step: 1,
 };
 
 export const addToCart = createAsyncThunk("cart/add", addToCartAPI);
@@ -46,9 +50,33 @@ export const CartSlice = createSlice({
       state.CartItems = [];
       localStorage.removeItem("cart");
     },
+    setAddress: (
+      state,
+      action: PayloadAction<{ address: ShipAddressType }>
+    ) => {
+      state.shippingAddress = action.payload.address;
+      localStorage.setItem(
+        "shippingAddress",
+        JSON.stringify(state.shippingAddress)
+      );
+    },
     clearAddress: (state) => {
-      state.shipAddress = null;
-      localStorage.removeItem("shipAddress");
+      state.shippingAddress = {
+        address: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      };
+      localStorage.removeItem("shippingAddress");
+    },
+    setPaymentMethod: (state, action: PayloadAction<"信用卡" | "貨到付款">) => {
+      state.paymentMethod = action.payload;
+    },
+    nextStep: (state) => {
+      if (state.step < 4) state.step += 1;
+    },
+    lastStep: (state) => {
+      if (state.step > 1) state.step -= 1;
     },
   },
   extraReducers: (builder) => {
@@ -69,8 +97,16 @@ export const CartSlice = createSlice({
   },
 });
 
-export const { removeFromCart, clearCart, clearAddress, changeQty } =
-  CartSlice.actions;
+export const {
+  removeFromCart,
+  clearCart,
+  setAddress,
+  clearAddress,
+  changeQty,
+  nextStep,
+  lastStep,
+  setPaymentMethod,
+} = CartSlice.actions;
 
 export const selectCart = (state: RootState) => state.cart;
 

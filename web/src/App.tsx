@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import ProductEdit from "./pages/ProductEdit";
@@ -16,8 +17,9 @@ const App = () => {
       <main className="container mx-auto p-6 pt-[100px] md:pt-[150px]">
         <Route path="/" component={Home} exact />
         <Route path="/product/:id" component={ProductDetail} />
-        <Route path="/cart" component={Cart} />
         <Route path="/profile" component={Profile} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/checkout" component={Checkout} />
         <Route path="/admin/productlist" component={ProductList} exact />
         <Route
           path="/admin/productlist/:pageNumber"
