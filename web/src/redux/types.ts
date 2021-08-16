@@ -44,6 +44,7 @@ export type OrderItemType = {
 };
 
 export type OrderType = {
+  _id: string;
   user: UserType;
   orderItems: OrderItemType[];
   shippingAddress: ShipAddressType;

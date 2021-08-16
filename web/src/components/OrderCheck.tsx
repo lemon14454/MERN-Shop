@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { lastStep, selectCart } from "../redux/cart";
-import { createOrder, selectOrder } from "../redux/order";
+import { createOrder } from "../redux/order";
 import { selectUser } from "../redux/user";
 import CheckoutComponent from "./CheckoutComponent";
 

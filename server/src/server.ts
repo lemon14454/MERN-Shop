@@ -17,6 +17,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/upload", uploadRoutes);
 
+app.get("/api/config/paypal", (_, res) => res.send(process.env.paypal));
+
 // const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(path.resolve(), "../web/src")));
 

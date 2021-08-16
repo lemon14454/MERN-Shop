@@ -310,9 +310,14 @@ export const getOrderDetailsAPI = async ({
 interface payOrderProps {
   id: string;
   token: string;
+  paymentResult: any;
 }
 
-export const payOrderAPI = async ({ id, token }: payOrderProps) => {
+export const payOrderAPI = async ({
+  id,
+  token,
+  paymentResult,
+}: payOrderProps) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -320,7 +325,11 @@ export const payOrderAPI = async ({ id, token }: payOrderProps) => {
     },
   };
 
-  const { data } = await axios.put(`/api/orders/${id}/pay`, {}, config);
+  const { data } = await axios.put(
+    `/api/orders/${id}/pay`,
+    paymentResult,
+    config
+  );
 
   return data;
 };
