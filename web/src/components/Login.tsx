@@ -8,7 +8,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const {
     login: { error },
-    panel,
   } = useAppSelector(selectUser);
 
   return (

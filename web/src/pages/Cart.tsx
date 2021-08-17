@@ -13,8 +13,8 @@ const Cart = () => {
   );
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center gap-4 relative">
-      <div className="bg-white rounded-md p-4 shadow-md">
+    <div className="flex flex-col lg:flex-row justify-center gap-4 relative items-start">
+      <div className="bg-white rounded-md p-4 shadow-md w-full xl:w-[800px]">
         <h1 className="text-3xl font-bold mb-6">購物車</h1>
         {CartItems.length === 0 ? (
           <p className="text-sm text-gray-400 w-[300px] md:w-[800px]">
@@ -79,7 +79,7 @@ const Cart = () => {
       </div>
 
       {CartItems.length > 0 && (
-        <div className="bg-white rounded-md p-4 shadow-md min-w-[400px] h-[170px] relative pb-8">
+        <div className="bg-white rounded-md p-4 shadow-md relative w-full xl:flex-1">
           <h1 className="text-3xl font-bold mb-8">總結</h1>
           <div className="top-3 right-3 absolute flex gap-x-2">
             <Link

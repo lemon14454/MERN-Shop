@@ -16,7 +16,8 @@ export interface OrderState {
   };
   // all order
   orderList: {
-    orders: OrderType[] | null;
+    orders: OrderType[] | [];
+    success: boolean;
   };
   // by id
   order: {
@@ -26,7 +27,7 @@ export interface OrderState {
 
 const initialState: OrderState = {
   createdOrder: { order: null },
-  orderList: { orders: null },
+  orderList: { orders: [], success: false },
   order: { order: null },
 };
 
@@ -53,6 +54,9 @@ export const OrderSlice = createSlice({
     clearCreatedOrder: (state) => {
       state.createdOrder.order = null;
     },
+    clearOrderSuccess: (state) => {
+      state.orderList.success = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -67,10 +71,12 @@ export const OrderSlice = createSlice({
       // set paid
       .addCase(setPayment.fulfilled, (state, action) => {
         state.order.order = action.payload;
+        state.orderList.success = true;
       })
       // set deliver
       .addCase(setDeliver.fulfilled, (state, action) => {
         state.order.order = action.payload;
+        state.orderList.success = true;
       })
       // get Orders
       .addCase(fetchOrders.fulfilled, (state, action) => {
@@ -83,7 +89,7 @@ export const OrderSlice = createSlice({
   },
 });
 
-export const { clearCreatedOrder } = OrderSlice.actions;
+export const { clearCreatedOrder, clearOrderSuccess } = OrderSlice.actions;
 
 export const selectOrder = (state: RootState) => state.order;
 

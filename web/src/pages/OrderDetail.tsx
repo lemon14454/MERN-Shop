@@ -136,14 +136,16 @@ const OrderDetail = ({ match, history }: RouteComponentProps<IParam>) => {
                 {order.paymentMethod}
               </p>
 
-              {!order.isPaid && sdkReady && order && (
-                <PayPalButton
-                  onButtonReady={() => setSdkReady(true)}
-                  amount={order.totalPrice}
-                  currency="TWD"
-                  onSuccess={successPaymentHandler}
-                />
-              )}
+              {!order.isPaid &&
+                sdkReady &&
+                order.paymentMethod === "信用卡" && (
+                  <PayPalButton
+                    onButtonReady={() => setSdkReady(true)}
+                    amount={order.totalPrice}
+                    currency="TWD"
+                    onSuccess={successPaymentHandler}
+                  />
+                )}
             </div>
           </div>
         </div>

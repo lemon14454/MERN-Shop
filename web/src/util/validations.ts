@@ -40,3 +40,12 @@ export const ShippingAddress = Yup.object().shape({
   postalCode: Yup.string().required("郵遞區號不能為空"),
   country: Yup.string().required("國家不能為空"),
 });
+
+export const EditUser = Yup.object().shape({
+  name: Yup.string()
+    .min(3, "名稱不能小於3個字元")
+    .max(10, "名稱不能超過10個字元")
+    .required("名稱欄位不可為空"),
+  email: Yup.string().email("錯誤的信箱格式").required("信箱欄位不可為空"),
+  isAdmin: Yup.boolean(),
+});

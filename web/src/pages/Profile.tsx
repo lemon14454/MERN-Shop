@@ -1,17 +1,34 @@
+import { XIcon } from "@heroicons/react/outline";
 import { Formik } from "formik";
+import { useEffect } from "react";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectUser, updateUserProfile } from "../redux/user";
+import { fetchMyOrders, selectOrder } from "../redux/order";
+import { selectUser, togglePanel, updateUserProfile } from "../redux/user";
 import { UpdateProfile } from "../util/validations";
 
-const Profile = () => {
+const Profile = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch();
   const {
     login: { userInfo },
   } = useAppSelector(selectUser);
 
+  const {
+    orderList: { orders },
+  } = useAppSelector(selectOrder);
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/");
+      dispatch(togglePanel("login"));
+    }
+
+    dispatch(fetchMyOrders(userInfo?.token!));
+  }, [dispatch, userInfo]);
+
   return (
-    <div className="flex gap-2">
-      <div className="bg-white rounded-md p-4 shadow-md w-[400px]">
+    <div className="lg:flex gap-2 items-start">
+      <div className="bg-white rounded-md p-4 shadow-md w-full lg:w-[450px]">
         <h1 className="text-3xl font-bold mb-6">使用者資料</h1>
 
         {userInfo && (
@@ -122,6 +139,58 @@ const Profile = () => {
           </Formik>
         )}
       </div>
+
+      <table className="w-full bg-white shadow-md mt-6 lg:mt-0">
+        <thead className="font-bold text-md border-b-2 border-gray-300 shadow-md">
+          <tr>
+            <th>訂單編號</th>
+            <th>建立日期</th>
+            <th>金額</th>
+            <th>付款狀態</th>
+            <th>運送狀態</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody className="text-center">
+          {orders!.map((order) => (
+            <tr
+              key={order._id}
+              className="text-xs border-b-[1px] border-gray-200 hover:bg-gray-100"
+            >
+              <td>
+                <Link to={`/order/${order._id}`} className="font-bold">
+                  {order._id}
+                </Link>
+              </td>
+
+              <td>{order.createdAt.substring(0, 10)}</td>
+              <td>${order.totalPrice.toLocaleString("zh-tw")}</td>
+              <td className={`${order.isPaid ? "text-main" : ""}`}>
+                {order.isPaid ? (
+                  order.paidAt.substring(0, 10)
+                ) : (
+                  <XIcon className="text-red-500 h-5 w-5 mx-auto" />
+                )}
+              </td>
+              <td className={`${order.isDelivered ? "text-main" : ""}`}>
+                {order.isDelivered ? (
+                  order.deliveredAt?.substring(0, 10)
+                ) : (
+                  <XIcon className="text-red-500 h-5 w-5 mx-auto" />
+                )}
+              </td>
+              <td className="flex flex-col md:flex-row justify-evenly gap-y-2">
+                <Link
+                  to={`/order/${order._id}`}
+                  className="py-2 px-4 bg-bg hover:bg-gray-200 border border-gray-200 rounded-sm"
+                >
+                  詳情
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectUser, togglePanel } from "../redux/user";
 import { clearCart, selectCart } from "../redux/cart";
-import { clearCreatedOrder, selectOrder } from "../redux/order";
+import { clearCreatedOrder, createOrder, selectOrder } from "../redux/order";
 import ItemCheck from "../components/ItemCheck";
 import AddressCheck from "../components/AddressCheck";
 import PaymentCheck from "../components/PaymentCheck";
@@ -30,7 +30,7 @@ const Checkout = ({ history }: RouteComponentProps) => {
       // 訂單建立完成跳到 訂單頁面
       dispatch(clearCart());
       dispatch(clearCreatedOrder());
-      history.push("/");
+      history.push(`/order/${order._id}`);
     }
   }, [userInfo, dispatch, history, order]);
 

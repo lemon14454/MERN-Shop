@@ -15,8 +15,6 @@ interface MatchProps {
   pageNumber: string;
 }
 
-// Bug: 資料更新完畢後，回到商品列表會有問題，無法再次按下編輯鍵
-
 const ProductList = ({ match, history }: RouteComponentProps<MatchProps>) => {
   const dispatch = useAppDispatch();
   const {

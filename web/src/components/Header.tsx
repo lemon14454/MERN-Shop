@@ -9,6 +9,9 @@ import {
   CogIcon,
   MenuIcon,
   ArchiveIcon,
+  UserAddIcon,
+  DocumentIcon,
+  DocumentSearchIcon,
 } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 
@@ -64,10 +67,20 @@ const Header = () => {
                 </Link>
 
                 {userInfo?.isAdmin && (
-                  <Link to="/admin/productlist" className="nav-button">
-                    商品管理
-                    <ArchiveIcon className="icon" />
-                  </Link>
+                  <>
+                    <Link to="/admin/productlist" className="nav-button">
+                      商品管理
+                      <ArchiveIcon className="icon" />
+                    </Link>
+                    <Link to="/admin/orderlist" className="nav-button">
+                      訂單管理
+                      <DocumentSearchIcon className="icon" />
+                    </Link>
+                    <Link to="/admin/userlist" className="nav-button">
+                      會員管理
+                      <UserAddIcon className="icon" />
+                    </Link>
+                  </>
                 )}
 
                 <button

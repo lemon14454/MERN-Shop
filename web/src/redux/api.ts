@@ -162,6 +162,22 @@ export const updateUserAPI = async ({ user, token }: UpdateUserProps) => {
   return data;
 };
 
+//getUserDetailByID
+interface GetUserDetailProps {
+  id: string;
+  token: string;
+}
+export const getUserDetailAPI = async ({ id, token }: GetUserDetailProps) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(`/api/users/${id}`, config);
+  return data;
+};
+
 // -----------------------Products-------------------------
 
 // fetchProductsAPI

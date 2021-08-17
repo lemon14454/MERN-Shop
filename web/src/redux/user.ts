@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { loginAPI, registerAPI, updateUserProfileAPI } from "./api";
+import {
+  deleteUserAPI,
+  getUserDetailAPI,
+  listUserAPI,
+  loginAPI,
+  registerAPI,
+  updateUserAPI,
+  updateUserProfileAPI,
+} from "./api";
 import { UserType } from "./types";
 
 export interface UserState {
@@ -12,6 +20,14 @@ export interface UserState {
   register: {
     error: string;
   };
+  deleteUser: {
+    success: boolean;
+  };
+  updateUser: {
+    success: boolean;
+  };
+  users: UserType[] | [];
+  user: UserType | null;
 }
 
 const userInfoFromStorage: UserType | null = localStorage.getItem("userInfo")
@@ -27,13 +43,28 @@ const initialState: UserState = {
   register: {
     error: "",
   },
+  deleteUser: {
+    success: false,
+  },
+  updateUser: {
+    success: false,
+  },
+  users: [],
+  user: null,
 };
 
 export const login = createAsyncThunk("user/login", loginAPI);
 export const register = createAsyncThunk("user/register", registerAPI);
 export const updateUserProfile = createAsyncThunk(
-  "user/update",
+  "user/updateProfile",
   updateUserProfileAPI
+);
+export const fetchUsers = createAsyncThunk("user/list", listUserAPI);
+export const deleteUser = createAsyncThunk("user/delete", deleteUserAPI);
+export const updateUser = createAsyncThunk("user/update", updateUserAPI);
+export const fetchUserDetail = createAsyncThunk(
+  "user/detail",
+  getUserDetailAPI
 );
 
 export const userSlice = createSlice({
@@ -49,6 +80,10 @@ export const userSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("userInfo");
       state.login.userInfo = initialState.login.userInfo;
+    },
+    clearSuccess: (state) => {
+      state.deleteUser.success = false;
+      state.updateUser.success = false;
     },
   },
   extraReducers: (builder) => {
@@ -75,11 +110,27 @@ export const userSlice = createSlice({
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.login.userInfo = action.payload;
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      })
+      // List All User
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+      })
+      // Delete User
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.deleteUser.success = true;
+      })
+      // Update User
+      .addCase(updateUser.fulfilled, (state) => {
+        state.updateUser.success = true;
+      })
+      // Get User Detail
+      .addCase(fetchUserDetail.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
   },
 });
 
-export const { togglePanel, logout } = userSlice.actions;
+export const { togglePanel, logout, clearSuccess } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 
