@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
@@ -18,8 +19,16 @@ const App = () => {
   return (
     <Router>
       <Header />
-      <main className="container mx-auto p-6 pt-[100px]">
+      <main className="container mx-auto p-6">
         <Route path="/" component={Home} exact />
+        <Route path="/search/:keyword" component={Home} exact />
+        <Route path="/page/:pageNumber" component={Home} exact />
+        <Route
+          path="/search/:keyword/page/:pageNumber"
+          component={Home}
+          exact
+        />
+
         <Route path="/product/:id" component={ProductDetail} />
         <Route path="/profile" component={Profile} />
         <Route path="/cart" component={Cart} />
@@ -38,6 +47,7 @@ const App = () => {
       </main>
 
       <Modal />
+      <Toaster />
     </Router>
   );
 };

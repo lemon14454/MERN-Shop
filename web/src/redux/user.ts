@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { RootState } from "../app/store";
 import {
   deleteUserAPI,
@@ -80,6 +81,7 @@ export const userSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("userInfo");
       state.login.userInfo = initialState.login.userInfo;
+      toast.success("您已順利登出");
     },
     clearSuccess: (state) => {
       state.deleteUser.success = false;
@@ -94,6 +96,7 @@ export const userSlice = createSlice({
         state.login.userInfo = action.payload;
         state.login.error = "";
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
+        toast.success("您已登入成功");
       })
       .addCase(login.rejected, (state) => {
         state.login.error = "信箱或密碼錯誤";
@@ -102,6 +105,7 @@ export const userSlice = createSlice({
       .addCase(register.fulfilled, (state) => {
         state.register.error = "";
         state.panel = "login";
+        toast.success("您已註冊成功");
       })
       .addCase(register.rejected, (state) => {
         state.register.error = "資料格式錯誤";
@@ -110,6 +114,7 @@ export const userSlice = createSlice({
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.login.userInfo = action.payload;
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
+        toast.success("您已成功更新資料");
       })
       // List All User
       .addCase(fetchUsers.fulfilled, (state, action) => {
@@ -118,9 +123,11 @@ export const userSlice = createSlice({
       // Delete User
       .addCase(deleteUser.fulfilled, (state) => {
         state.deleteUser.success = true;
+        toast.success("您已成功刪除使用者");
       })
       // Update User
       .addCase(updateUser.fulfilled, (state) => {
+        toast.success("您已成功更新使用者");
         state.updateUser.success = true;
       })
       // Get User Detail

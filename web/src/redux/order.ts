@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { RootState } from "../app/store";
 import {
   createOrderAPI,
@@ -63,6 +64,7 @@ export const OrderSlice = createSlice({
       // create Order
       .addCase(createOrder.fulfilled, (state, action) => {
         state.createdOrder.order = action.payload;
+        toast.success("成功建立訂單");
       })
       // get Order Detail
       .addCase(fetchOrderById.fulfilled, (state, action) => {
@@ -72,11 +74,13 @@ export const OrderSlice = createSlice({
       .addCase(setPayment.fulfilled, (state, action) => {
         state.order.order = action.payload;
         state.orderList.success = true;
+        toast.success("付款成功");
       })
       // set deliver
       .addCase(setDeliver.fulfilled, (state, action) => {
         state.order.order = action.payload;
         state.orderList.success = true;
+        toast.success("商品抵達");
       })
       // get Orders
       .addCase(fetchOrders.fulfilled, (state, action) => {

@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { addToCart } from "../redux/cart";
+import toast from "react-hot-toast";
 
 const Product = ({
   _id,
@@ -56,7 +57,11 @@ const Product = ({
         <button
           className="card-button"
           onClick={() => {
-            if (stock > 0) dispatch(addToCart({ id: _id, qty: 1 }));
+            if (stock > 0) {
+              dispatch(addToCart({ id: _id, qty: 1 }));
+            } else {
+              toast.error(`${name} 目前缺貨中`);
+            }
           }}
         >
           <ShoppingCartIcon className="h-5 w-5 mr-2" /> 加入購物車

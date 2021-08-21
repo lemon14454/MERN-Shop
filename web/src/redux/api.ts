@@ -1,4 +1,5 @@
 import axios from "axios";
+import { string } from "yup/lib/locale";
 import {
   CartItemType,
   OrderItemType,
@@ -249,6 +250,35 @@ export const updateProductAPI = async ({
   const { data } = await axios.put(
     `/api/products/${product._id}`,
     product,
+    config
+  );
+
+  return data;
+};
+
+interface RateProductProps {
+  id: string;
+  review: {
+    rating: Number;
+  };
+  token: string;
+}
+
+export const rateProductAPI = async ({
+  id,
+  review,
+  token,
+}: RateProductProps) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.put(
+    `/api/products/${id}/reviews`,
+    review,
     config
   );
 

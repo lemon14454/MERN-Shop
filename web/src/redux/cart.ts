@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { RootState } from "../app/store";
 import { addToCartAPI } from "./api";
 import { CartItemType, ShipAddressType } from "./types";
@@ -93,6 +94,7 @@ export const CartSlice = createSlice({
           state.CartItems = [...state.CartItems!, item];
         }
         localStorage.setItem("cart", JSON.stringify(state.CartItems));
+        toast.success("已加入購物車");
       });
   },
 });

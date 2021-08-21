@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { RootState } from "../app/store";
 import {
   createProductAPI,
@@ -145,6 +146,7 @@ export const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state) => {
         state.productDelete.loading = false;
         state.productDelete.success = true;
+        toast.success("已成功刪除商品");
       })
       // create Product
       .addCase(createProduct.pending, (state) => {
@@ -154,6 +156,7 @@ export const productSlice = createSlice({
         state.productCreate.loading = false;
         state.productCreate.success = true;
         state.productCreate.product = action.payload;
+        toast.success("已成功建立商品");
       })
       // update Product
       .addCase(updateProduct.pending, (state) => {
@@ -163,6 +166,7 @@ export const productSlice = createSlice({
         state.productUpdate.loading = false;
         state.productUpdate.success = true;
         state.imageUpload.image = "";
+        toast.success("已成功更新商品");
       })
       // upload Image
       .addCase(uploadImage.pending, (state) => {
@@ -171,6 +175,7 @@ export const productSlice = createSlice({
       .addCase(uploadImage.fulfilled, (state, action) => {
         state.imageUpload.image = action.payload;
         state.imageUpload.loading = false;
+        toast.success("已成功上傳照片");
       });
   },
 });

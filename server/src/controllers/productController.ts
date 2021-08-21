@@ -4,14 +4,30 @@ import Product from "../models/Product";
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const pageSize = 8;
+    const pageSize = 4;
     const page = Number(req.query.pageNumber) || 1;
     const keyword = req.query.keyword
       ? {
-          name: {
-            $regex: req.query.keyword,
-            $option: "i",
-          },
+          $or: [
+            {
+              name: {
+                $regex: req.query.keyword,
+                $options: "i",
+              },
+            },
+            {
+              brand: {
+                $regex: req.query.keyword,
+                $options: "i",
+              },
+            },
+            {
+              category: {
+                $regex: req.query.keyword,
+                $options: "i",
+              },
+            },
+          ],
         }
       : {};
 

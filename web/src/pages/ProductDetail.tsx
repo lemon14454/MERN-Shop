@@ -60,7 +60,7 @@ const ProductDetail = ({ match }: RouteComponentProps<IParam>) => {
             {stockShow! > 0 ? (
               <>
                 <select
-                  className=" border-gray-300 border-2 h-[45px] px-3 mr-3 rounded-lg focus:border-main focus:ring-main"
+                  className="border-gray-300 border-2 h-[45px] px-3 mr-3 rounded-lg focus:border-main focus:ring-main min-w-[70px]"
                   value={qty}
                   onChange={(e) => setQty(Number(e.target.value))}
                 >
