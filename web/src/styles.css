@@ -49,4 +49,8 @@
   .user-form-error {
     @apply text-red-500 text-xs font-medium mt-3 ml-2;
   }
+
+  .used-tech {
+    @apply col-span-1 flex items-center font-mono font-medium;
+  }
 }

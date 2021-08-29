@@ -285,6 +285,11 @@ export const rateProductAPI = async ({
   return data;
 };
 
+export const fetchTopProductsAPI = async () => {
+  const { data } = await axios.get(`/api/products/top`);
+  return data;
+};
+
 // ----------------------- Cart -------------------------
 interface AddToCartProps {
   id: string;
