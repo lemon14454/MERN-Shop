@@ -8,7 +8,8 @@
     "dev": "nodemon --exec ts-node server/server.ts",
     "data:import": "node dist/seeder",
     "clean": "rm -rf dist",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn --prefix web && yarn build --prefix web"
+    "install-client": "cd web && yarn && yarn build",
+    "heroku-postbuild": "yarn install-client && tsc"
   },
   "keywords": [],
   "author": "",
