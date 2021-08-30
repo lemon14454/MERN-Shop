@@ -9,7 +9,7 @@
     "data:import": "node dist/seeder",
     "build": "tsc",
     "clean": "rm -rf dist",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn && yarn build && yarn --prefix web && yarn build --prefix web"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn --prefix web && yarn build --prefix web"
   },
   "keywords": [],
   "author": "",
