@@ -19,12 +19,19 @@ app.use("/api/upload", uploadRoutes);
 
 app.get("/api/config/paypal", (_, res) => res.send(process.env.paypal));
 
-// const __dirname = path.resolve();
-app.use("/uploads", express.static(path.join(path.resolve(), "../web/src")));
+app.use("/uploads", express.static(path.join(path.resolve(), "web/build")));
 
-app.get("/", (_, res) => {
-  res.send("Api is running");
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(path.resolve(), "web/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(path.resolve(), "web", "build", "index.html"))
+  );
+} else {
+  app.get("/", (_, res) => {
+    res.send("Api is running");
+  });
+}
 
 app.listen(process.env.PORT, () => {
   console.log(`server running at port ${process.env.PORT}`);
