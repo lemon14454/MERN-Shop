@@ -9,7 +9,7 @@
     "data:import": "node dist/seeder",
     "clean": "rm -rf dist",
     "install-client": "cd web && yarn && yarn build",
-    "heroku-postbuild": "yarn install-client && tsc"
+    "heroku-postbuild": "YARN_PRODUCTION=false yarn install-client && tsc"
   },
   "keywords": [],
   "author": "",

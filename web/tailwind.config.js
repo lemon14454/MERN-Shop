@@ -10,7 +10,7 @@ module.exports = {
         bg: "#f7f8f9",
       },
       fontFamily: {
-        noto: ["Noto Sans", "sans-serif"],
+        inter: ["Inter", "Noto Sans TC", "sans-serif"],
       },
     },
   },

@@ -49,7 +49,7 @@ const Login = () => {
               className="user-form-input"
               type="email"
               name="email"
-              placeholder="請輸入信箱"
+              placeholder="請輸入信箱 (mengtse@mail.com)"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
@@ -61,7 +61,7 @@ const Login = () => {
               className="user-form-input"
               type="password"
               name="password"
-              placeholder="請輸入密碼"
+              placeholder="請輸入密碼 (mengtse)"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}

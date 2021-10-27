@@ -33,7 +33,7 @@ const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
     }
   }, [history, productId, product, dispatch]);
 
-  const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 僅上傳圖片，表單還沒送出
     e.preventDefault();
     const files = e.target.files!;

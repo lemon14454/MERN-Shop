@@ -3,12 +3,11 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   target: "web",
-  entry: path.resolve(__dirname, "..", "./src/index.tsx"),
+  entry: path.resolve(__dirname, "./src/index.tsx"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
@@ -52,7 +51,7 @@ module.exports = {
   mode: "production",
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "..", "./src/index.html"),
+      template: path.resolve(__dirname, "./src/index.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "style.css",
@@ -79,7 +78,7 @@ module.exports = {
     historyApiFallback: { index: "/", disableDotRule: true },
     // 避免讓照片上傳後出現重新整理
     watchOptions: {
-      ignored: [path.resolve(__dirname, "..", "src", "images")],
+      ignored: [path.resolve(__dirname, "./src/images")],
     },
   },
 };

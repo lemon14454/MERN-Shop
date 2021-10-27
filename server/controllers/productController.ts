@@ -72,7 +72,7 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
       name: "Sample Name",
       price: 0,
       user: req.user?._id,
-      image: "/images/sample.jpg",
+      image: "sample.jpg",
       brand: "Sample Brand",
       category: "Sample Category",
       stock: 0,

@@ -4,7 +4,6 @@ import { RouteComponentProps } from "react-router-dom";
 import { fetchProducts, selectProduct } from "../redux/product";
 import Product from "../components/Product";
 import Pagination from "../components/Pagination";
-import ProductCarousel from "../components/ProductCarousel";
 
 interface MatchProps {
   keyword: string;
@@ -26,7 +25,6 @@ const Home = ({ match }: RouteComponentProps<MatchProps>) => {
 
   return (
     <>
-      <ProductCarousel />
       <div className="p-2">
         <h1 className="text-2xl font-bold">最新商品</h1>
         <p className="text-gray-400 text-md">展示因素，每頁4筆</p>

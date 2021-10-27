@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply m-0 p-0 font-noto antialiased min-h-[100vh] relative bg-bg;
+    @apply m-0 p-0 font-inter antialiased min-h-[100vh] relative bg-bg;
   }
 
   th,

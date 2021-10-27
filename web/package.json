@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve --config webpack/webpack.config.js --open",
-    "build": "YARN_PRODUCTION=false webpack --mode production --config webpack/webpack.config.js",
+    "dev": "webpack serve --open",
+    "build": "webpack --mode production",
     "clean": "rm -rf build"
   },
   "keywords": [],
