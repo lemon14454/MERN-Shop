@@ -8,7 +8,6 @@ import {
   fetchProductsAPI,
   fetchTopProductsAPI,
   updateProductAPI,
-  uploadImages,
 } from "./api";
 import { ProductType } from "./types";
 
@@ -35,10 +34,6 @@ export interface ProductState {
   productUpdate: {
     loading: boolean;
     success: boolean;
-  };
-  imageUpload: {
-    loading: boolean;
-    image: string;
   };
   topProducts: ProductType[];
 }
@@ -73,17 +68,8 @@ const initialState: ProductState = {
     loading: false,
     success: false,
   },
-  imageUpload: {
-    loading: false,
-    image: "",
-  },
   topProducts: [],
 };
-
-export const uploadImage = createAsyncThunk(
-  "product/uploadImage",
-  uploadImages
-);
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
@@ -173,17 +159,7 @@ export const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state) => {
         state.productUpdate.loading = false;
         state.productUpdate.success = true;
-        state.imageUpload.image = "";
         toast.success("已成功更新商品");
-      })
-      // upload Image
-      .addCase(uploadImage.pending, (state) => {
-        state.imageUpload.loading = true;
-      })
-      .addCase(uploadImage.fulfilled, (state, action) => {
-        state.imageUpload.image = action.payload;
-        state.imageUpload.loading = false;
-        toast.success("已成功上傳照片");
       })
       // top products
       .addCase(fetchTopProducts.fulfilled, (state, action) => {

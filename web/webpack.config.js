@@ -2,6 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
@@ -43,6 +45,9 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimizer: [new CssMinimizerPlugin(), new UglifyJsPlugin()],
+  },
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "..", "./build"),
@@ -51,14 +56,12 @@ module.exports = {
   mode: "production",
   plugins: [
     new HtmlWebpackPlugin({
+      favicon: path.resolve(__dirname, "./src/favicon/favicon.ico"),
       template: path.resolve(__dirname, "./src/index.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "style.css",
     }),
-    // new CopyPlugin({
-    //   patterns: [{ from: "./src/static", to: "./static" }],
-    // }),
     new CleanWebpackPlugin(),
     new CompressionPlugin(),
     new webpack.DefinePlugin({
@@ -66,7 +69,6 @@ module.exports = {
         NODE_ENV: JSON.stringify("production"),
       },
     }),
-    new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
   ],
   // devtool: "source-map",
   devServer: {
@@ -76,9 +78,5 @@ module.exports = {
     port: 8080,
     contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: { index: "/", disableDotRule: true },
-    // 避免讓照片上傳後出現重新整理
-    watchOptions: {
-      ignored: [path.resolve(__dirname, "./src/images")],
-    },
   },
 };

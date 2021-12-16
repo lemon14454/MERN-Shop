@@ -3,8 +3,9 @@
 @import "tailwindcss/utilities";
 
 @layer base {
+  html,
   body {
-    @apply m-0 p-0 font-inter antialiased min-h-[100vh] relative bg-bg;
+    @apply m-0 p-0 font-inter antialiased min-h-screen relative bg-bg;
   }
 
   th,
@@ -39,7 +40,7 @@
   }
 
   .user-form {
-    @apply bg-white p-4 rounded-md w-[90%] mt-[150px] lg:mt-0 lg:w-[500px] relative;
+    @apply bg-white p-4 rounded relative w-[360px] transform translate-y-[15vw];
   }
 
   .user-form-input {
@@ -48,9 +49,5 @@
 
   .user-form-error {
     @apply text-red-500 text-xs font-medium mt-3 ml-2;
-  }
-
-  .used-tech {
-    @apply col-span-1 flex items-center font-mono font-medium;
   }
 }

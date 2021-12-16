@@ -2,15 +2,10 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { changeQty, removeFromCart, selectCart } from "../redux/cart";
 import { TrashIcon, CheckCircleIcon } from "@heroicons/react/solid";
-import { importImages } from "../redux/api";
 
 const Cart = () => {
   const dispatch = useAppDispatch();
   const { CartItems } = useAppSelector(selectCart);
-
-  const images = importImages(
-    require.context("../images", false, /\.(png|jpe?g)$/)
-  );
 
   return (
     <div className="flex flex-col lg:flex-row justify-center gap-4 relative items-start">
@@ -27,28 +22,24 @@ const Cart = () => {
           <div className="mt-5">
             {CartItems?.map((item) => (
               <div
-                className="grid grid-cols-9 md:grid-cols-10 items-center gap-x-4 hover:bg-gray-100 p-4 rounded"
+                className="grid grid-cols-9 md:grid-cols-10 items-center gap-2 hover:bg-gray-100 rounded mb-2"
                 key={item._id}
               >
                 <div className="md:col-span-1 hidden md:inline-block">
-                  <img
-                    src={`${images[item.image]}`}
-                    alt={item._id}
-                    className="rounded-md"
-                  />
+                  <img src={item.image} alt={item._id} className="rounded-md" />
                 </div>
 
-                <div className="col-span-3 flex font-bold">
+                <div className="col-span-3 font-bold text-gray-700 text-xs">
                   <Link to={`/product/${item._id}`}>{item.name}</Link>
                 </div>
 
-                <div className="col-span-2 flex justify-center">
+                <div className="col-span-2 flex justify-center text-xs">
                   $ {item.price.toLocaleString("zh-tw")}
                 </div>
 
-                <div className="col-span-2 flex justify-center">
+                <div className="col-span-2">
                   <select
-                    className=" border-gray-300 border-2 h-[45px] w-[60px] px-3 mr-3 rounded-lg focus:border-main focus:ring-main"
+                    className="rounded focus:border-main focus:ring-main h-10 w-16"
                     value={item.qty}
                     onChange={(e) =>
                       dispatch(

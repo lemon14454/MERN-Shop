@@ -1,14 +1,16 @@
+import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { Formik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { storage } from "../firebase/firebase";
 import {
   fetchProductById,
   fetchProducts,
   selectProduct,
   updateProduct,
-  uploadImage,
 } from "../redux/product";
+import { ProductType } from "../redux/types";
 import { selectUser } from "../redux/user";
 
 interface MatchProps {
@@ -20,12 +22,13 @@ const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
   const dispatch = useAppDispatch();
   const {
     productDetail: { product, loading: detailLoading },
-    imageUpload: { image: uploadedImage },
   } = useAppSelector(selectProduct);
 
   const {
     login: { userInfo },
   } = useAppSelector(selectUser);
+
+  const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
     if (!product?.name || product._id !== productId) {
@@ -36,8 +39,27 @@ const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 僅上傳圖片，表單還沒送出
     e.preventDefault();
-    const files = e.target.files!;
-    dispatch(uploadImage(files));
+    const file = e.target.files![0];
+    setImage(file);
+  };
+
+  const uploadImageHandler = async (values: ProductType) => {
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+
+    const storageRef = ref(storage, `image/${image!.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, image!, metadata);
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+        await dispatch(
+          updateProduct({
+            product: { ...values, image: downloadURL },
+            token: userInfo?.token!,
+          })
+        );
+      });
+    });
   };
 
   return (
@@ -50,14 +72,16 @@ const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
             ...product,
           }}
           onSubmit={async (values) => {
-            const image = uploadedImage || values.image;
-
-            await dispatch(
-              updateProduct({
-                product: { ...values, image },
-                token: userInfo?.token!,
-              })
-            );
+            if (image) {
+              await uploadImageHandler(values);
+            } else {
+              await dispatch(
+                updateProduct({
+                  product: { ...values },
+                  token: userInfo?.token!,
+                })
+              );
+            }
             // 更新完列表要重整
             dispatch(fetchProducts({}));
             history.push("/admin/productlist");
@@ -139,14 +163,6 @@ const ProductEdit = ({ match, history }: RouteComponentProps<MatchProps>) => {
 
               <div className="w-full px-3">
                 <label className="form-label">照片</label>
-                <input
-                  type="text"
-                  name="image"
-                  placeholder={values.image}
-                  className="form-input"
-                  onChange={handleChange}
-                  value={values.image}
-                />
                 <input type="file" onChange={uploadFileHandler} />
               </div>
 

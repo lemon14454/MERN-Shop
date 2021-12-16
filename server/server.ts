@@ -1,10 +1,10 @@
 import "dotenv/config";
 import express from "express";
+import expressStaticGzip from "express-static-gzip";
 import connectDB from "./db";
 import productRoutes from "./routes/productRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import userRoutes from "./routes/userRoutes";
-import uploadRoutes from "./routes/uploadRoutes";
 import path from "path";
 
 connectDB();
@@ -15,13 +15,13 @@ app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/upload", uploadRoutes);
 
 app.get("/api/config/paypal", (_, res) => res.send(process.env.paypal));
 
-app.use("/uploads", express.static(path.join(path.resolve(), "/build")));
+// app.use("/uploads", express.static(path.join(path.resolve(), "/build")));
 
 if (process.env.NODE_ENV === "production") {
+  app.use(expressStaticGzip(path.join(path.resolve(), "/build"), {}));
   app.use(express.static(path.join(path.resolve(), "/build")));
 
   app.get("*", (req, res) =>

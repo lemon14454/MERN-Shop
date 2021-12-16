@@ -1,5 +1,4 @@
 import axios from "axios";
-import { string } from "yup/lib/locale";
 import {
   CartItemType,
   OrderItemType,
@@ -7,33 +6,6 @@ import {
   ShipAddressType,
   UserType,
 } from "./types";
-
-// load ImageAPI
-
-export const importImages = (r: __WebpackModuleApi.RequireContext) => {
-  let images: any = {};
-  r.keys().map((item, index) => {
-    images[item.replace("./", "")] = r(item);
-  });
-  return images;
-};
-
-// upload ImageAPI
-
-export const uploadImages = async (files: HTMLInputElement["files"]) => {
-  const file = files![0];
-  const formData = new FormData();
-  formData.append("image", file as any);
-
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-  const { data } = await axios.post("/api/upload", formData, config);
-  const image = data.split("/")[4];
-  return image;
-};
 
 // -----------------------Users-------------------------
 

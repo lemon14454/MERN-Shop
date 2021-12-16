@@ -1,16 +1,19 @@
 module.exports = {
-  purge: ["./src/**/.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  purge: {
+    enabled: true,
+    content: ["./src/**/.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  },
   mode: "jit",
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
-        text: "1E1E1E",
-        main: "#07b53b",
-        bg: "#f7f8f9",
+        main: "#09B53C",
+        "light-red": "#fc5e44",
+        bg: "#F5F4F7",
       },
       fontFamily: {
-        inter: ["Inter", "Noto Sans TC", "sans-serif"],
+        inter: ["Noto Sans TC", "Inter", "sans-serif"],
       },
     },
   },

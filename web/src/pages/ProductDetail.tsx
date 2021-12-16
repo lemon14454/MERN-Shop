@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Rating from "../components/Rating";
-import { importImages } from "../redux/api";
 import { addToCart } from "../redux/cart";
 import { fetchProductById, selectProduct } from "../redux/product";
 
@@ -22,17 +21,13 @@ const ProductDetail = ({ match }: RouteComponentProps<IParam>) => {
     dispatch(fetchProductById(match.params.id));
   }, [match, dispatch]);
 
-  const images = importImages(
-    require.context("../images", false, /\.(png|jpe?g)$/)
-  );
-
   const stockShow = product?.stock! >= 5 ? 5 : product?.stock;
 
   return (
-    <div className="flex flex-col md:flex-row justify-center gap-y-8 gap-x-20 items-center">
+    <div className="flex flex-col md:flex-row justify-center gap-y-8 gap-x-20 items-center md:mt-20">
       <img
         className="max-w-[350px] lg:max-w-[500px] rounded-md shadow-sm"
-        src={images[`${product?.image}`]}
+        src={product?.image}
         alt={product?._id}
       />
       <div className="max-w-[500px]">

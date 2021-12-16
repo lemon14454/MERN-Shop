@@ -49,8 +49,8 @@ const ProductList = ({ match, history }: RouteComponentProps<MatchProps>) => {
 
   return (
     <>
-      <table className="w-full bg-white shadow-md relative">
-        <thead className="font-bold text-lg border-b-2 border-gray-300 shadow-md">
+      <table className="w-full bg-white relative">
+        <thead className="font-bold text-lg border-b-2 border-gray-300">
           <tr>
             <th>商品名稱</th>
             <th>價格</th>

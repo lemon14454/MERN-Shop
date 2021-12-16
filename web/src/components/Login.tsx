@@ -70,7 +70,7 @@ const Login = () => {
               {errors.password && touched.password && errors.password}
             </p>
 
-            <div className="flex mt-6">
+            <div className="flex mt-12">
               <div className="text-xs">
                 <p>
                   還沒有帳號?{" "}

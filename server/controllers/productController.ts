@@ -4,7 +4,7 @@ import Product from "../models/Product";
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const pageSize = 4;
+    const pageSize = 6;
     const page = Number(req.query.pageNumber) || 1;
     const keyword = req.query.keyword
       ? {
@@ -72,7 +72,7 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
       name: "Sample Name",
       price: 0,
       user: req.user?._id,
-      image: "sample.jpg",
+      image: process.env.SAMPLE_IMAGE,
       brand: "Sample Brand",
       category: "Sample Category",
       stock: 0,

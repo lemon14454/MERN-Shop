@@ -31,8 +31,8 @@ const OrderList = ({ history }: RouteComponentProps) => {
     dispatch(fetchOrders(userInfo?.token!));
   }, [dispatch, userInfo, success]);
   return (
-    <table className="w-full bg-white shadow-md relative">
-      <thead className="font-bold text-md border-b-2 border-gray-300 shadow-md">
+    <table className="w-full bg-white relative">
+      <thead className="font-bold text-md border-b-2 border-gray-300">
         <tr>
           <th>訂單編號</th>
           <th>使用者</th>
